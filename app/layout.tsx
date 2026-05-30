@@ -13,10 +13,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://portfolio-rabirabi.vercel.app");
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://wahyubudiman.com",
-  ),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Wahyu Budiman — System Analyst / Product Engineer",
     template: "%s — Wahyu Budiman",
@@ -49,12 +55,21 @@ export const metadata: Metadata = {
     title: "Wahyu Budiman — System Analyst / Product Engineer",
     description:
       "Apollo-era mission archive portfolio for systems, product engineering, and operational governance work.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Wahyu Budiman — System Analyst / Product Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wahyu Budiman — System Analyst / Product Engineer",
     description:
       "Portfolio of Wahyu Budiman, System Analyst / Product Engineer based in Jakarta.",
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
