@@ -53,14 +53,14 @@ function CoordinateRow({ coordinate }: { coordinate: Coordinate }) {
   };
 
   return (
-    <div className="flex items-center justify-between gap-6 border-b-[0.5px] border-[#2b2b2b]/12 py-5">
+    <div className="flex flex-col items-start gap-3 border-b-[0.5px] border-[#2b2b2b]/12 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
       <div className="font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/40 uppercase">
         {coordinate.label}
       </div>
 
       <a
         href={coordinate.href}
-        className="font-mission-mono text-[12px] text-[#1e1e1e]/70 transition-colors hover:text-[#1e1e1e]"
+        className="break-all font-mission-mono text-[11px] text-[#1e1e1e]/70 transition-colors hover:text-[#1e1e1e] sm:text-[12px]"
       >
         {coordinate.value}
       </a>
@@ -68,7 +68,7 @@ function CoordinateRow({ coordinate }: { coordinate: Coordinate }) {
       <button
         type="button"
         onClick={handleCopy}
-        className="border-[0.5px] border-[#2b2b2b]/20 px-2 py-1 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/30 uppercase transition-colors hover:border-[#2b2b2b]/40 hover:text-[#2b2b2b]/60"
+        className="w-full border-[0.5px] border-[#2b2b2b]/20 px-2 py-1 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/30 uppercase transition-colors hover:border-[#2b2b2b]/40 hover:text-[#2b2b2b]/60 text-center sm:w-auto"
       >
         COPY
       </button>

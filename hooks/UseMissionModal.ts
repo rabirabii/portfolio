@@ -14,7 +14,7 @@ type MissionModalContextValue = {
   isSuccess: boolean;
   openModal: (type: ModalType, data?: Record<string, string>) => void;
   closeModal: () => void;
-  confirmModal: () => Promise<void>;
+  confirmModal: (data?: Record<string, string>) => Promise<void>;
 };
 
 export const MissionModalContext =

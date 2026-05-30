@@ -13,6 +13,7 @@ import {
   type ModalPayload,
   type ModalType,
 } from "@/hooks/UseMissionModal";
+import { CV_FILES } from "@/lib/cvConstants";
 
 function getTimestamp() {
   return new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -41,26 +42,32 @@ export function MissionModalProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const confirmModal = useCallback(async () => {
+  const confirmModal = useCallback(async (data: Record<string, string> = {}) => {
     if (!modal) return;
 
+    const modalData = {
+      ...modal.data,
+      ...data,
+    };
+
     if (modal.type === "cv-download") {
+      const fallbackCv = CV_FILES[0];
       const link = document.createElement("a");
-      link.href = "/cv/wahyu-budiman-cv.pdf";
-      link.download = "WB-CV-2026.pdf";
+      link.href = modalData.cvHref ?? fallbackCv.href;
+      link.download = modalData.cvDownloadName ?? fallbackCv.downloadName;
       link.click();
     }
 
     if (modal.type === "contact-copy") {
-      await navigator.clipboard.writeText(modal.data.copyValue ?? "");
+      await navigator.clipboard.writeText(modalData.copyValue ?? "");
     }
 
     if (modal.type === "transmit") {
       const subject = encodeURIComponent(
-        `TRANSMISSION: ${modal.data.designation}`,
+        `TRANSMISSION: ${modalData.designation}`,
       );
       const body = encodeURIComponent(
-        `FROM: ${modal.data.designation}\nORIGIN: ${modal.data.origin}\n\n${modal.data.transmission}`,
+        `FROM: ${modalData.designation}\nORIGIN: ${modalData.origin}\n\n${modalData.transmission}`,
       );
 
       // [INSERT_EMAIL]
@@ -77,7 +84,7 @@ export function MissionModalProvider({ children }: { children: ReactNode }) {
 
     window.setTimeout(() => {
       closeModal();
-    }, 1800);
+    }, modal.type === "cv-download" ? 2600 : 1800);
   }, [closeModal, modal]);
 
   useEffect(() => {

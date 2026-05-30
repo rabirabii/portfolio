@@ -16,7 +16,7 @@ export const modalCopy: Record<string, ModalConfig> = {
     body: "Curriculum Vitae — Wahyu Budiman\nCompiled: 2026 // Format: PDF",
     cancel: "ABORT",
     confirm: "→ DOWNLOAD_FILE",
-    success: "DOWNLOAD INITIALIZED — FILE TRANSFER ACTIVE",
+    success: "DOWNLOAD CLEARANCE GRANTED",
   },
   "contact-copy": {
     header: "// SYSTEM PROMPT — SIGNAL COPY",

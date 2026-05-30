@@ -1,16 +1,19 @@
 "use client";
 
 import { ModalPayload } from "@/hooks/UseMissionModal";
+import { CV_FILES } from "@/lib/cvConstants";
 import { modalCopy } from "@/lib/missionConstants";
 import { AnimatePresence, useReducedMotion, motion } from "framer-motion";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type MissionModalProps = {
   modal: ModalPayload | null;
   isSuccess: boolean;
   onClose: () => void;
-  onConfirm: () => Promise<void>;
+  onConfirm: (data?: Record<string, string>) => Promise<void>;
 };
+
+type CvFileId = (typeof CV_FILES)[number]["id"];
 
 function getContactBody(label: string) {
   if (label === "EMAIL")
@@ -29,8 +32,11 @@ export function MissionModal({
 }: MissionModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const [selectedCvId, setSelectedCvId] = useState<CvFileId>(CV_FILES[0].id);
 
   const content = modal ? modalCopy[modal.type] : null;
+  const selectedCv =
+    CV_FILES.find((cvFile) => cvFile.id === selectedCvId) ?? CV_FILES[0];
 
   const bodyCopy = useMemo(() => {
     if (!modal || !content) return "";
@@ -46,8 +52,8 @@ export function MissionModal({
 
     if (modal.type === "cv-download") {
       return [
-        ["FILE", "WB-CV-2026.PDF"],
-        ["SIZE", "[INSERT approx file size once known]"],
+        ["FILE", selectedCv.file],
+        ["CHANNEL", selectedCv.label],
         ["ACCESS", "CLEARED — NO RESTRICTIONS"],
         ["TIMESTAMP", modal.data.timestamp],
       ];
@@ -68,7 +74,7 @@ export function MissionModal({
       ["ENCRYPT", "STANDARD"],
       ["TIMESTAMP", modal.data.timestamp],
     ];
-  }, [modal]);
+  }, [modal, selectedCv]);
 
   useEffect(() => {
     if (!modal) return;
@@ -112,7 +118,7 @@ export function MissionModal({
     <AnimatePresence>
       {modal && content ? (
         <motion.div
-          className="fixed inset-0 z-[900] flex items-center justify-center bg-[rgba(30,30,30,0.72)]"
+          className="fixed inset-0 z-[900] flex items-end justify-center bg-[rgba(30,30,30,0.72)] p-3 sm:items-center sm:p-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -129,7 +135,7 @@ export function MissionModal({
             tabIndex={-1}
             onMouseDown={(event) => event.stopPropagation()}
             onKeyDown={handleKeyDown}
-            className="relative w-[min(480px,calc(100vw-48px))] overflow-hidden border-[0.5px] border-[rgba(43,43,43,0.25)] bg-[#f4f1ea] outline-none"
+            className="relative w-[calc(100vw-24px)] overflow-hidden border-[0.5px] border-[rgba(43,43,43,0.25)] bg-[#f4f1ea] outline-none sm:w-[min(480px,calc(100vw-48px))]"
             initial={{
               opacity: 0,
               y: shouldReduceMotion ? 0 : -12,
@@ -154,7 +160,7 @@ export function MissionModal({
               </button>
             </div>
 
-            <div className="relative flex flex-col gap-5 px-6 pt-7 pb-6">
+            <div className="relative flex flex-col gap-5 px-4 pt-5 pb-4 sm:px-6 sm:pt-7 sm:pb-6">
               <div className="flex items-center gap-3">
                 <span className="mission-type-cursor h-[6px] w-[6px] rounded-full bg-[#1e1e1e]" />
                 <span className="font-mission-mono text-[10px] tracking-widest text-[rgba(43,43,43,0.6)] uppercase">
@@ -177,6 +183,35 @@ export function MissionModal({
                 {bodyCopy}
               </p>
 
+              {modal.type === "cv-download" ? (
+                <div className="grid gap-2">
+                  {CV_FILES.map((cvFile, index) => {
+                    const isSelected = cvFile.id === selectedCvId;
+
+                    return (
+                      <button
+                        key={cvFile.id}
+                        type="button"
+                        onClick={() => setSelectedCvId(cvFile.id)}
+                        className={`border-[0.5px] px-3 py-3 text-left font-mission-mono uppercase transition-colors duration-150 ${
+                          isSelected
+                            ? "border-[#1e1e1e]/45 bg-[#1e1e1e]/6 text-[#1e1e1e]"
+                            : "border-[rgba(43,43,43,0.14)] text-[rgba(43,43,43,0.52)] hover:border-[rgba(43,43,43,0.3)] hover:text-[#1e1e1e]"
+                        }`}
+                      >
+                        <span className="block text-[9px] tracking-[0.28em]">
+                          [{String(index + 1).padStart(2, "0")}]{" "}
+                          {cvFile.label}
+                        </span>
+                        <span className="mt-2 block break-all text-[9px] tracking-[0.14em] text-[rgba(43,43,43,0.42)]">
+                          FILE: {cvFile.file}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+
               <div className="my-1 border-y-[0.5px] border-[rgba(43,43,43,0.1)] py-3 font-mission-mono text-[9px] leading-[1.9] tracking-widest text-[rgba(43,43,43,0.4)] uppercase">
                 {readout.map(([key, value]) => (
                   <div key={key} className="grid grid-cols-[88px_1fr] gap-3">
@@ -186,25 +221,48 @@ export function MissionModal({
                 ))}
               </div>
 
-              <div className="flex justify-end gap-3">
+              <div className="flex flex-col justify-end gap-3 sm:flex-row">
                 {isSuccess ? (
-                  <div className="flex items-center gap-2 font-mission-mono text-[10px] tracking-widest text-[#1e1e1e] uppercase">
-                    <span className="h-[6px] w-[6px] rounded-full bg-[#1e1e1e]" />
-                    {content.success}
-                  </div>
+                  modal.type === "cv-download" ? (
+                    <div className="w-full border-[0.5px] border-[#1e1e1e]/20 bg-[#1e1e1e]/5 px-4 py-3 font-mission-mono uppercase">
+                      <div className="flex items-center gap-2 text-[10px] tracking-widest text-[#1e1e1e]">
+                        <span className="h-[6px] w-[6px] rounded-full bg-[#1e1e1e]" />
+                        {content.success}
+                      </div>
+                      <div className="mt-3 grid gap-1 text-[9px] leading-[1.7] tracking-[0.2em] text-[#2b2b2b]/50">
+                        <span>FILE TRANSFER: ACTIVE</span>
+                        <span>ARCHIVE: {selectedCv.file}</span>
+                        <span>DESTINATION: LOCAL DOWNLOADS DIRECTORY</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 font-mission-mono text-[10px] tracking-widest text-[#1e1e1e] uppercase">
+                      <span className="h-[6px] w-[6px] rounded-full bg-[#1e1e1e]" />
+                      {content.success}
+                    </div>
+                  )
                 ) : (
                   <>
                     <button
                       type="button"
                       onClick={onClose}
-                      className="border-[0.5px] border-[rgba(43,43,43,0.2)] px-4 py-2 font-mission-mono text-[9px] tracking-widest text-[rgba(43,43,43,0.5)] uppercase transition-colors duration-150 hover:bg-[rgba(43,43,43,0.08)]"
+                      className="w-full border-[0.5px] border-[rgba(43,43,43,0.2)] px-4 py-2 font-mission-mono text-[9px] tracking-widest text-[rgba(43,43,43,0.5)] uppercase transition-colors duration-150 hover:bg-[rgba(43,43,43,0.08)] sm:w-auto"
                     >
                       {content.cancel}
                     </button>
                     <button
                       type="button"
-                      onClick={onConfirm}
-                      className="bg-[#1e1e1e] px-4 py-2 font-mission-mono text-[9px] tracking-widest text-[#f4f1ea] uppercase transition-colors duration-150 hover:bg-[#2b2b2b]"
+                      onClick={() =>
+                        onConfirm(
+                          modal.type === "cv-download"
+                            ? {
+                                cvHref: selectedCv.href,
+                                cvDownloadName: selectedCv.downloadName,
+                              }
+                            : undefined,
+                        )
+                      }
+                      className="w-full bg-[#1e1e1e] px-4 py-2 font-mission-mono text-[9px] tracking-widest text-[#f4f1ea] uppercase transition-colors duration-150 hover:bg-[#2b2b2b] sm:w-auto"
                     >
                       {content.confirm}
                     </button>

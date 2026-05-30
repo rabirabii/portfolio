@@ -3,10 +3,15 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+
+const DESKTOP_CURSOR_QUERY =
+  "(hover: hover) and (pointer: fine) and (min-width: 1024px)";
+
 export function CustomCursor() {
   const pathName = usePathname();
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
+  const [isDesktopCursorEnabled, setIsDesktopCursorEnabled] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isInverted, setIsInverted] = useState(false);
 
@@ -14,6 +19,32 @@ export function CustomCursor() {
   const springY = useSpring(mouseY, { stiffness: 500, damping: 38 });
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_CURSOR_QUERY);
+
+    const syncCursorAvailability = () => {
+      window.requestAnimationFrame(() => {
+        setIsDesktopCursorEnabled(mediaQuery.matches);
+
+        if (!mediaQuery.matches) {
+          setIsHovering(false);
+          setIsInverted(false);
+          mouseX.set(-100);
+          mouseY.set(-100);
+        }
+      });
+    };
+
+    syncCursorAvailability();
+    mediaQuery.addEventListener("change", syncCursorAvailability);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncCursorAvailability);
+    };
+  }, [mouseX, mouseY]);
+
+  useEffect(() => {
+    if (!isDesktopCursorEnabled) return;
+
     const handleMove = (event: MouseEvent) => {
       mouseX.set(event.clientX);
       mouseY.set(event.clientY);
@@ -59,9 +90,11 @@ export function CustomCursor() {
       window.removeEventListener("mouseout", handleOut);
       window.removeEventListener("pointerdown", handlePointerDown);
     };
-  }, [mouseX, mouseY]);
+  }, [isDesktopCursorEnabled, mouseX, mouseY]);
 
   useEffect(() => {
+    if (!isDesktopCursorEnabled) return;
+
     const frame = window.requestAnimationFrame(() => {
       setIsHovering(false);
       setIsInverted(false);
@@ -70,7 +103,11 @@ export function CustomCursor() {
     return () => {
       window.cancelAnimationFrame(frame);
     };
-  }, [pathName]);
+  }, [isDesktopCursorEnabled, pathName]);
+
+  if (!isDesktopCursorEnabled) {
+    return null;
+  }
 
   return (
     <motion.div

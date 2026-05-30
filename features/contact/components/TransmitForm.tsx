@@ -64,7 +64,7 @@ export function TransmitForm() {
         // OPTIONAL — OPEN A TRANSMISSION
       </div>
 
-      <Field label="DESIGNATION">
+      <Field label="DESIGNATION" error={errors.designation}>
         <input
           value={designation}
           onChange={(event) => setDesignation(event.target.value)}
@@ -73,7 +73,7 @@ export function TransmitForm() {
         />
       </Field>
 
-      <Field label="ORIGIN">
+      <Field label="ORIGIN" error={errors.origin}>
         <input
           value={origin}
           onChange={(event) => setOrigin(event.target.value)}
@@ -82,7 +82,7 @@ export function TransmitForm() {
         />
       </Field>
 
-      <Field label="TRANSMISSION">
+      <Field label="TRANSMISSION" error={errors.transmission}>
         <textarea
           value={transmission}
           onChange={(event) => setTransmission(event.target.value)}
@@ -96,7 +96,7 @@ export function TransmitForm() {
         type="button"
         disabled={state === "sending"}
         onClick={handleTransmit}
-        className="border-[0.5px] border-[#2b2b2b]/35 px-6 py-3 font-mission-mono text-[10px] tracking-widest text-[#1e1e1e] uppercase transition-colors duration-200 hover:bg-[#1e1e1e] hover:text-[#f4f1ea] disabled:opacity-40"
+        className="w-full border-[0.5px] border-[#2b2b2b]/35 px-6 py-3 font-mission-mono text-[10px] tracking-widest text-[#1e1e1e] uppercase transition-colors duration-200 hover:bg-[#1e1e1e] hover:text-[#f4f1ea] disabled:opacity-40 sm:w-auto"
       >
         {state === "sending" ? "TRANSMITTING..." : "→ TRANSMIT_SIGNAL"}
       </button>

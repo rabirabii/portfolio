@@ -109,11 +109,15 @@ export function CaseFileCard({ caseStudy }: { caseStudy: CaseStudy }) {
         setIsHovered(false);
         setIsStackExpanded(false);
       }}
-      className={`group flex h-dvh w-[380px] min-w-[380px] flex-col justify-between border-r-[0.5px] border-[#2b2b2b]/12 bg-[#f4f1ea] px-7 py-8 transition-colors duration-200 ${
+      className={`group flex min-h-[520px] w-full flex-col justify-between border-b-[0.5px] border-[#2b2b2b]/12 bg-[#f4f1ea] px-6 py-7 transition-colors duration-200 sm:h-dvh sm:w-[380px] sm:min-w-[380px] sm:border-r-[0.5px] sm:border-b-0 sm:px-7 sm:py-8 ${
         isClassified
           ? "hover:bg-[#f4f1ea]"
           : "hover:border-[#f4f1ea]/12 hover:bg-[#1e1e1e]"
       }`}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => {
+        window.setTimeout(() => setIsHovered(false), 900);
+      }}
     >
       <div>
         <div className="flex justify-between gap-4 font-mission-mono text-[9px] tracking-widest uppercase">
@@ -139,7 +143,7 @@ export function CaseFileCard({ caseStudy }: { caseStudy: CaseStudy }) {
       </div>
       {isClassified ? (
         <div className="flex flex-col gap-3">
-          <div className="font-mission-display text-[52px] leading-none text-[#2b2b2b]/8">
+          <div className="font-mission-display text-[clamp(20px,5vw,26px)] leading-[1.1] tracking-[0.06em] ...">
             {caseStudy.index}
           </div>
 

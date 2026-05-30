@@ -3,9 +3,7 @@ import Link from "next/link";
 import { HeroBackgroundGrid } from "./components/HeroBackgroundGrid";
 import { HeroNavbar } from "../../../components/ui/Navbar";
 import { OrbitalCenterpiece } from "./components/OrbitalCenterpiece";
-import { TypewriterText } from "./components/TypewriterText";
 import { BootSequence } from "./components/BootSequence";
-import { CustomCursor } from "../../../components/effects/CustomCursor";
 
 const MISSION_OBJECTIVE =
   "MISSION OBJECTIVE: TRANSFORM AMBIGUITY INTO OPERATIONAL SYSTEMS";
@@ -20,7 +18,13 @@ const SYSTEM_READOUT =
 export function HeroSection() {
   const telemetry = (
     <>
-      <div className="mission-meta mission-meta-left">{DOCUMENT_REF}</div>
+      <div className="mission-meta mission-meta-left">
+        <span className="hidden sm:inline">{DOCUMENT_REF}</span>
+        <span className="sm:hidden">
+          DOC. REF: WB-2026 // CLEARANCE GRANTED
+        </span>
+      </div>
+
       <div className="mission-meta mission-meta-center">{SYSTEM_READOUT}</div>
       <div className="mission-meta mission-meta-right">{TELEMETRY_TEXT}</div>
     </>
@@ -64,7 +68,31 @@ export function HeroSection() {
       <BootSequence
         nav={<HeroNavbar cvPath={CV_PATH} />}
         grid={<HeroBackgroundGrid />}
-        orbit={<OrbitalCenterpiece />}
+        orbit={
+          <>
+            <div className="mission-orbit-desktop">
+              <OrbitalCenterpiece />
+            </div>
+            <div className="mission-mobile-axis" aria-hidden="true">
+              <div className="mission-mobile-axis-line" />
+              <div className="mission-mobile-axis-readout mission-mobile-axis-readout-top">
+                <span>VECTOR</span>
+                <span>06.12S</span>
+              </div>
+              <div className="mission-mobile-axis-tape">
+                <span>SYS</span>
+                <span>ANL</span>
+                <span>PRD</span>
+                <span>ENG</span>
+                <span>WB</span>
+              </div>
+              <div className="mission-mobile-axis-readout mission-mobile-axis-readout-bottom">
+                <span>106.49E</span>
+                <span>ORBITAL</span>
+              </div>
+            </div>
+          </>
+        }
         telemetry={telemetry}
         brief={brief}
         name={name}

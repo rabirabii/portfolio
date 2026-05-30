@@ -17,11 +17,11 @@ export function WorkDetail({ caseStudy }: { caseStudy: CaseStudy }) {
       <main className="relative min-h-screen bg-[#f4f1ea] text-[#1e1e1e]">
         <HeroNavbar cvPath="/cv/wahyu-budiman-cv.pdf" />
 
-        <div className="sticky top-[52px] z-20 flex h-10 items-center justify-between border-b-[0.5px] border-[#2b2b2b]/12 bg-[#f4f1ea]/80 px-8 backdrop-blur-sm">
+        <div className="sticky top-[52px] z-20 flex h-10 items-center justify-between gap-4 border-b-[0.5px] border-[#2b2b2b]/12 bg-[#f4f1ea]/80 px-4 backdrop-blur-sm sm:px-8">
           <Link href="/work" className="mission-action-link">
             ← CASE_FILES
           </Link>
-          <div className="font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/50 uppercase">
+          <div className="hidden font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/50 uppercase sm:block">
             {caseStudy.codename}
           </div>
           <div className="font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/40 uppercase">
@@ -36,7 +36,7 @@ export function WorkDetail({ caseStudy }: { caseStudy: CaseStudy }) {
           <ImpactSection caseStudy={caseStudy} isClassified={isClassified} />
         </ScannerEnter>
 
-        <div className="px-8 py-8 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/35 uppercase">
+        <div className="px-8 py-4 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/35 uppercase sm:px-8">
           END OF DOCUMENT // {caseStudy.caseId}
         </div>
 
