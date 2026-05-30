@@ -1,3 +1,5 @@
+"use client";
+import { useMissionModal } from "@/hooks/UseMissionModal";
 import Link from "next/link";
 
 type HeroNavbarProps = {
@@ -5,6 +7,7 @@ type HeroNavbarProps = {
 };
 
 export function HeroNavbar({ cvPath }: HeroNavbarProps) {
+  const { openModal } = useMissionModal();
   return (
     <nav className="mission-nav">
       <Link href="/" className="mission-nav-logo">
@@ -21,9 +24,14 @@ export function HeroNavbar({ cvPath }: HeroNavbarProps) {
         <Link href="/contact" className="mission-nav-link">
           SIGNAL
         </Link>
-        <a href={cvPath} download className="mission-cv-link">
+        <button
+          type="button"
+          data-modal="cv-download"
+          onClick={() => openModal("cv-download")}
+          className="mission-cv-link"
+        >
           ↓ DOWNLOAD CV
-        </a>
+        </button>
       </div>
     </nav>
   );

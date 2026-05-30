@@ -1,5 +1,16 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
+import { TypewriterText } from "@/components/ui/TypewriterText";
 import Link from "next/link";
+import type { CSSProperties } from "react";
+
+const PHILOSOPHY_LINES = `   Before a single line is written, three signals must be acquired: the
+          origin of failure, the intended destination, and the terrain between
+          them. A system is not built — it is recognized. The structure already
+          exists in the problem. The work is to find it.
+                The most effective interventions begin before the keyboard. Every
+          system has users who inherited it, stakeholders who commissioned it,
+          and operators who outlived its original intent. To build anything
+          worth keeping, you must first become all three`;
 
 export function OperationalPhilosophy() {
   return (
@@ -26,17 +37,14 @@ export function OperationalPhilosophy() {
           OPERATIONAL PHILOSOPHY
         </div>
         <p className="max-w-[520px] font-mission-mono text-[13px] leading-[1.9] text-[#1e1e1e]/80">
-          Before a single line is written, three signals must be acquired: the
-          origin of failure, the intended destination, and the terrain between
-          them. A system is not built — it is recognized. The structure already
-          exists in the problem. The work is to find it.
+          <TypewriterText text={PHILOSOPHY_LINES} delay={400} speed={18} />
         </p>
       </div>
 
       <div className="mb-12">
         <div className="mission-section-marker mb-4">FIELD ATTRIBUTES</div>
         <div className="mb-2 font-mission-display text-[22px] leading-[1.2] tracking-[0.12em] text-[#1e1e1e] uppercase">
-          EGOTIST. BETRAYER. SEEKER. LONER. PIONEER.
+          SEEKER. BUILDER. OPERATOR. PIONEER.{" "}
         </div>
         <div className="font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/30">
           // self-assigned field designations — not a warning, a method
@@ -54,12 +62,6 @@ export function OperationalPhilosophy() {
         />
         <OperationalRow
           index="02"
-          name="ECALMAS"
-          mission="CALIBRATION MANAGEMENT"
-          status="DEPLOYED"
-        />
-        <OperationalRow
-          index="03"
           name="EXIT-CLR"
           mission="GOVERNANCE & TRANSITION"
           status="CLOSED [RESTRICTED]"

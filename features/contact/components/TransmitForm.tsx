@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
-import { useState } from "react";
+import { useMissionModal } from "@/hooks/UseMissionModal";
+import { ReactNode, useEffect, useState } from "react";
 
 type FormState = "idle" | "sending" | "sent";
 
@@ -11,23 +12,38 @@ export function TransmitForm() {
   const [origin, setOrigin] = useState("");
   const [transmission, setTransmission] = useState("");
   const [timestamp, setTimestamp] = useState("");
+  const { openModal } = useMissionModal();
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
+  useEffect(() => {
+    const handleSent = (event: Event) => {
+      const customEvent = event as CustomEvent<{ timestamp: string }>;
+      setTimestamp(customEvent.detail.timestamp);
+      setState("sent");
+    };
+
+    window.addEventListener("mission-modal:transmit-sent", handleSent);
+    return () =>
+      window.removeEventListener("mission-modal:transmit-sent", handleSent);
+  }, []);
   const handleTransmit = () => {
-    setState("sending");
+    const nextErrors = {
+      designation: designation.trim().length === 0,
+      origin: origin.trim().length === 0,
+      transmission: transmission.trim().length === 0,
+    };
 
-    const subject = encodeURIComponent(
-      `TRANSMISSION: ${designation || "UNKNOWN DESIGNATION"}`,
-    );
-    const body = encodeURIComponent(
-      `DESIGNATION: ${designation}\nORIGIN: ${origin}\n\n${transmission}`,
-    );
+    setErrors(nextErrors);
 
-    // [INSERT actual email]
-    window.location.href = `mailto:wahyu@domain.com?subject=${subject}&body=${body}`;
+    if (Object.values(nextErrors).some(Boolean)) {
+      return;
+    }
 
-    const sentAt = new Date().toISOString().replace("T", " ").slice(0, 19);
-    setTimestamp(sentAt);
-    setState("sent");
+    openModal("transmit", {
+      designation,
+      origin,
+      transmission,
+    });
   };
 
   if (state === "sent") {
@@ -90,10 +106,12 @@ export function TransmitForm() {
 
 function Field({
   label,
+  error,
   children,
 }: {
   label: string;
-  children: React.ReactNode;
+  error?: boolean;
+  children: ReactNode;
 }) {
   return (
     <div className="mb-8">
@@ -101,6 +119,11 @@ function Field({
         {label}
       </label>
       {children}
+      {error ? (
+        <div className="mt-1 font-mission-mono text-[9px] tracking-widest text-[#1e1e1e]/60 uppercase">
+          // FIELD REQUIRED — SIGNAL INCOMPLETE
+        </div>
+      ) : null}
     </div>
   );
 }

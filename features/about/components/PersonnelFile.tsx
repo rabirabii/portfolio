@@ -27,9 +27,6 @@ export function PersonnelFile() {
         <Link href="/work/msdigit" className="mission-personnel-op-link">
           → MS-DIGI
         </Link>
-        <Link href="/work/ecalmas" className="mission-personnel-op-link">
-          → ECALMAS
-        </Link>
         <Link href="/work/exit-clearance" className="mission-personnel-op-link">
           → EXIT-CLR [RESTRICTED]
         </Link>

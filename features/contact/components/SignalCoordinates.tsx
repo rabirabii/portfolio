@@ -1,5 +1,6 @@
 "use client";
 
+import { useMissionModal } from "@/hooks/UseMissionModal";
 import { useState } from "react";
 
 type Coordinate = {
@@ -12,21 +13,21 @@ type Coordinate = {
 const COORDINATES: Coordinate[] = [
   {
     label: "EMAIL",
-    value: "wahyu[at]domain.com", // [INSERT actual email]
-    href: "mailto:wahyu@domain.com", // [INSERT actual email]
-    copyValue: "wahyu@domain.com", // [INSERT actual email]
+    value: "wahyubudiman0624@gmail.com",
+    href: "mailto:wahyubudiman0624@gmail.com",
+    copyValue: "wahyubudiman0624@gmail.com",
   },
   {
     label: "LINKEDIN",
-    value: "/in/wahyubdmn/", // [INSERT actual LinkedIn handle]
-    href: "https://www.linkedin.com/in/wahyubdmn/", // [INSERT actual LinkedIn URL]
-    copyValue: "https://www.linkedin.com/in/wahyubdmn/", // [INSERT actual LinkedIn URL]
+    value: "/in/wahyubdmn/",
+    href: "https://www.linkedin.com/in/wahyubdmn/",
+    copyValue: "https://www.linkedin.com/in/wahyubdmn/",
   },
   {
     label: "GITHUB",
-    value: "/wahyubudiman", // [INSERT actual GitHub handle]
-    href: "https://github.com/wahyubudiman", // [INSERT actual GitHub URL]
-    copyValue: "https://github.com/wahyubudiman", // [INSERT actual GitHub URL]
+    value: "/wahyubudiman",
+    href: "https://github.com/rabirabii",
+    copyValue: "https://github.com/rabirabii",
   },
 ];
 
@@ -41,15 +42,14 @@ export function SignalCoordinates() {
 }
 
 function CoordinateRow({ coordinate }: { coordinate: Coordinate }) {
-  const [copied, setCopied] = useState(false);
+  const { openModal } = useMissionModal();
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(coordinate.copyValue);
-    setCopied(true);
-
-    window.setTimeout(() => {
-      setCopied(false);
-    }, 1500);
+  const handleCopy = () => {
+    openModal("contact-copy", {
+      label: coordinate.label,
+      value: coordinate.value,
+      copyValue: coordinate.copyValue,
+    });
   };
 
   return (
@@ -70,7 +70,7 @@ function CoordinateRow({ coordinate }: { coordinate: Coordinate }) {
         onClick={handleCopy}
         className="border-[0.5px] border-[#2b2b2b]/20 px-2 py-1 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/30 uppercase transition-colors hover:border-[#2b2b2b]/40 hover:text-[#2b2b2b]/60"
       >
-        {copied ? "COPIED" : "COPY"}
+        COPY
       </button>
     </div>
   );
