@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "NeueHaasDisplay-Black";
+  src: url("../fonts/NeueHaasDisplay-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -10,6 +18,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-mission-display:
+    "NeueHaasDisplay-Black", "Neue Haas Grotesk", "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mission-mono: "Courier Prime", "Courier New", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,9 +30,530 @@
     --foreground: #ededed;
   }
 }
+@media (pointer: fine) {
+  body,
+  body * {
+    cursor: none;
+  }
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.mission-poetry-terminal {
+  @apply fixed inset-0 z-[200] flex items-center justify-center bg-[#f4f1ea] font-mission-mono text-[13px] leading-[1.9] tracking-[0.08em] text-[#1e1e1e];
+}
+
+.mission-poetry-terminal pre {
+  @apply whitespace-pre-wrap text-center;
+}
+
+.mission-crt-flash {
+  @apply pointer-events-none fixed inset-0 z-[190];
+  background: rgba(214, 255, 214, 0.78);
+  box-shadow: inset 0 0 120px rgba(255, 255, 255, 0.9);
+}
+
+.mission-payload {
+  @apply contents;
+}
+
+@layer components {
+  .mission-cursor-horizontal,
+  .mission-cursor-vertical,
+  .mission-cursor-dot {
+    transition:
+      background-color 0.12s ease,
+      width 0.15s ease,
+      height 0.15s ease;
+  }
+
+  .mission-cursor--inverted .mission-cursor-horizontal,
+  .mission-cursor--inverted .mission-cursor-vertical {
+    background-color: rgba(197, 255, 197, 0.78);
+  }
+
+  .mission-cursor--inverted .mission-cursor-dot {
+    background-color: rgba(214, 255, 214, 0.95);
+  }
+
+  .mission-hero {
+    @apply relative h-screen min-h-dvh w-full overflow-hidden bg-[#f4f1ea] text-[#1e1e1e];
+  }
+  .mission-cursor {
+    @apply pointer-events-none fixed top-0 left-0 z-[9999] h-8 w-8 -translate-x-1/2 -translate-y-1/2;
+  }
+
+  .mission-cursor-horizontal {
+    @apply absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-[#1e1e1e]/70;
+  }
+
+  .mission-cursor-vertical {
+    @apply absolute top-0 left-1/2 h-full w-px -translate-x-1/2 bg-[#1e1e1e]/70;
+  }
+
+  .mission-cursor-dot {
+    transition:
+      width 0.15s ease,
+      height 0.15s ease;
+    @apply absolute top-1/2 left-1/2 h-[3px] w-[3px] -translate-x-1/2 -translate-y-1/2 bg-[#1e1e1e]/80;
+  }
+  .mission-grid {
+    @apply pointer-events-none absolute inset-0 z-[1] font-mission-mono text-[#2b2b2b];
+  }
+
+  .mission-grid-frame {
+    @apply absolute inset-8 border-[0.5px] border-[#2b2b2b]/15;
+  }
+
+  .mission-grid-line {
+    @apply absolute bg-[#2b2b2b]/10;
+  }
+
+  .mission-grid-line-vertical {
+    @apply top-8 bottom-8 w-px;
+    transform: scaleX(0.5);
+  }
+
+  .mission-grid-line-horizontal {
+    @apply right-8 left-8 h-px;
+    transform: scaleY(0.5);
+  }
+
+  .mission-crosshair {
+    @apply absolute -translate-x-1/2 -translate-y-1/2 text-[10px] leading-none text-[#2b2b2b]/20;
+  }
+
+  .mission-corner-mark {
+    @apply absolute text-[22px] leading-none text-[#2b2b2b]/22;
+  }
+
+  .mission-corner-mark-tl {
+    @apply top-6 left-6;
+  }
+
+  .mission-corner-mark-tr {
+    @apply top-6 right-6;
+  }
+
+  .mission-corner-mark-bl {
+    @apply bottom-6 left-6;
+  }
+
+  .mission-corner-mark-br {
+    @apply right-6 bottom-6;
+  }
+
+  .mission-nav {
+    @apply absolute top-0 right-0 left-0 z-20 flex h-[52px] items-center justify-between border-b-[0.5px] border-[#2b2b2b]/20 bg-[#f4f1ea]/70 px-8 backdrop-blur-[2px];
+  }
+
+  .mission-nav-logo {
+    @apply font-mission-display text-[18px] tracking-[0.52em] text-[#1e1e1e];
+  }
+
+  .mission-nav-links {
+    @apply flex items-center gap-7;
+  }
+
+  .mission-nav-link {
+    @apply font-mission-mono text-[10px] tracking-[0.24em] text-[#2b2b2b]/70 uppercase hover:text-[#1e1e1e];
+  }
+
+  .mission-cv-link {
+    @apply font-mission-mono border-[0.5px] border-[#2b2b2b]/35 px-3 py-1 text-[10px] tracking-[0.2em] text-[#1e1e1e] uppercase hover:bg-[#1e1e1e]/6;
+  }
+
+  .mission-meta {
+    @apply font-mission-mono pointer-events-none absolute z-10 text-[10px] leading-[1.6] tracking-[0.2em] text-[#2b2b2b]/55 uppercase;
+  }
+
+  .mission-meta-left {
+    @apply top-[72px] left-8 max-w-[360px];
+  }
+
+  .mission-meta-right {
+    @apply top-[72px] right-8 max-w-[360px] text-right;
+  }
+
+  .mission-orbit {
+    @apply pointer-events-none absolute top-1/2 left-1/2 z-10 h-[min(48vw,440px)] w-[min(48vw,440px)] -translate-x-1/2 -translate-y-1/2 overflow-visible;
+  }
+
+  .mission-orbit-stepped {
+    fill: none;
+    stroke: rgba(30, 30, 30, 0.14);
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .mission-orbit-ticks {
+    fill: none;
+    stroke: rgba(30, 30, 30, 0.2);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .mission-brief {
+    @apply relative flex w-full flex-col gap-5 border-t-[0.5px] border-r-[0.5px] border-[#2b2b2b]/10 bg-transparent px-7 py-6;
+  }
+
+  .mission-section-marker {
+    @apply font-mission-mono text-[10px] tracking-[0.22em] text-[#2b2b2b]/70 uppercase;
+  }
+
+  .mission-brief-copy {
+    @apply font-mission-mono max-w-[360px] text-[13px] leading-[1.75] text-[#1e1e1e]/80;
+  }
+
+  .mission-action-link {
+    @apply font-mission-mono w-fit border-b-[0.5px] border-[#1e1e1e]/45 pb-[3px] text-[10px] tracking-[0.22em] text-[#1e1e1e] uppercase hover:border-[#1e1e1e] hover:bg-[#1e1e1e]/5;
+  }
+
+  .mission-name-cluster {
+    @apply absolute right-8 bottom-8 z-20 flex w-[min(760px,calc(100%_-_64px))] flex-col items-end gap-3 text-right;
+  }
+
+  .mission-role {
+    @apply font-mission-mono flex items-center gap-3 border-t-[0.5px] border-b-[0.5px] border-[#2b2b2b]/25 px-4 py-2 text-[10px] tracking-[0.26em] text-[#2b2b2b]/75 uppercase;
+  }
+
+  .mission-role-accent {
+    @apply text-[9px] text-[#1e1e1e]/65;
+  }
+
+  .mission-name {
+    @apply font-mission-display max-w-[760px] text-[#1e1e1e] uppercase;
+    font-size: clamp(56px, 8.4vw, 118px);
+    font-weight: 900;
+    letter-spacing: clamp(0.14em, 1.2vw, 0.34em);
+    line-height: 0.82;
+  }
+
+  .mission-paper-grain {
+    @apply pointer-events-none absolute inset-0 z-30 opacity-[0.18] mix-blend-multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23noise)' opacity='0.42'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .mission-scanlines {
+    @apply pointer-events-none absolute inset-0 z-40 opacity-[0.10];
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(30, 30, 30, 0.24) 0,
+      rgba(30, 30, 30, 0.24) 0.5px,
+      transparent 0.5px,
+      transparent 4px
+    );
+  }
+
+  .mission-vignette {
+    @apply pointer-events-none absolute inset-0 z-50;
+    box-shadow:
+      inset 0 0 90px rgba(30, 30, 30, 0.13),
+      inset 0 0 220px rgba(30, 30, 30, 0.1);
+  }
+
+  .mission-type-cursor {
+    @apply inline-block text-[#1e1e1e]/70;
+    animation: mission-cursor-blink 1s steps(2, end) infinite;
+  }
+
+  .mission-objective {
+    @apply font-mission-mono text-[9px] leading-[1.6] tracking-[0.22em] text-[#2b2b2b]/40 uppercase;
+  }
+
+  .mission-meta-center {
+    @apply top-[72px] left-1/2 max-w-[560px] -translate-x-1/2 text-center whitespace-nowrap;
+  }
+
+  .mission-stamp {
+    @apply font-mission-display pointer-events-none absolute top-4 right-4 border-[1px] border-[#1e1e1e]/12 px-3 py-1 text-[11px] tracking-[0.38em] text-[#1e1e1e]/12 uppercase;
+    transform: rotate(-17deg);
+    transform-origin: center;
+    animation: mission-stamp-appear 0.4s ease-out 5200ms both;
+  }
+
+  .mission-cursor-dot--active {
+    @apply h-[7px] w-[7px] bg-[#1e1e1e];
+    transition:
+      width 0.15s ease,
+      height 0.15s ease;
+  }
+
+  .mission-infrastructure-reveal {
+    @apply absolute inset-0 z-10;
+  }
+
+  .mission-telemetry-reveal {
+    @apply absolute inset-0 z-20;
+  }
+
+  .mission-brief-reveal {
+    @apply absolute bottom-8 left-8 z-20 w-[min(430px,calc(100%_-_64px))];
+  }
+
+  .mission-name-reveal {
+    @apply absolute right-8 bottom-8 z-20 w-[min(760px,calc(100%_-_64px))];
+  }
+
+  .mission-name-cluster {
+    @apply static w-full;
+  }
+  .mission-work-tag {
+    @apply font-mission-mono border-[0.5px] border-[#2b2b2b]/20 px-2 py-[2px] text-[9px] tracking-[0.15em] text-[#2b2b2b]/55 uppercase;
+  }
+
+  .mission-work-section-header {
+    @apply font-mission-mono mb-8 border-b-[0.5px] border-[#2b2b2b]/12 pb-2 text-[10px] tracking-[0.28em] text-[#2b2b2b]/55 uppercase;
+  }
+
+  .mission-work-metric-value {
+    @apply font-mission-display text-[#1e1e1e];
+    font-size: clamp(42px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+
+  .mission-work-metric-label {
+    @apply mt-2 font-mission-mono text-[10px] tracking-[0.18em] text-[#2b2b2b]/50 uppercase;
+  }
+
+  .mission-interstitial {
+    @apply fixed inset-0 z-[300] flex items-center justify-center bg-[#f4f1ea] font-mission-mono text-[11px] tracking-[0.28em] text-[#2b2b2b]/50 uppercase;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-scan-index] {
+    opacity: 0;
+  }
+
+  [data-visible-indexes~="0"] [data-scan-index="0"],
+  [data-visible-indexes~="1"] [data-scan-index="1"],
+  [data-visible-indexes~="2"] [data-scan-index="2"],
+  [data-visible-indexes~="3"] [data-scan-index="3"] {
+    opacity: 1;
+  }
+
+  .mission-redact {
+    @apply inline-block bg-[#1e1e1e] align-middle;
+    height: 0.85em;
+    border-radius: 1px;
+    vertical-align: middle;
+  }
+
+  .mission-classified-banner {
+    @apply mt-[52px] flex w-full flex-col gap-1 border-b-[0.5px] border-[#1e1e1e]/20 bg-[#1e1e1e]/4 px-8 py-3 font-mission-mono;
+  }
+
+  .mission-classified-banner-marker {
+    @apply text-[10px] font-bold tracking-[0.28em] text-[#1e1e1e] uppercase;
+  }
+
+  .mission-classified-banner-body {
+    @apply text-[9px] leading-[1.7] tracking-[0.18em] text-[#2b2b2b]/60 uppercase;
+  }
+
+  .mission-classified-banner-meta {
+    @apply text-[9px] tracking-[0.18em] text-[#2b2b2b]/35 uppercase;
+  }
+
+  .mission-classified-figure {
+    @apply flex min-h-[200px] flex-1 flex-col items-center justify-center gap-3 border-[0.5px] border-[#2b2b2b]/15 px-8 py-12;
+  }
+
+  .mission-classified-figure-bar {
+    @apply h-[3px] w-full bg-[#1e1e1e]/12;
+  }
+
+  .mission-redact-decision {
+    @apply mb-3 border-l-[0.5px] border-[#2b2b2b]/10 pl-4 opacity-40;
+  }
+
+  .mission-card-redact-inline {
+    height: 9px;
+  }
+
+  .mission-personnel-row {
+    @apply flex items-baseline gap-4 border-b-[0.5px] border-[#2b2b2b]/8 py-2 font-mission-mono;
+  }
+
+  .mission-personnel-key {
+    @apply w-[120px] flex-shrink-0 text-[9px] tracking-[0.22em] text-[#2b2b2b]/35 uppercase;
+  }
+
+  .mission-personnel-value {
+    @apply text-[10px] tracking-[0.15em] text-[#1e1e1e]/70 uppercase;
+  }
+
+  .mission-personnel-op-link {
+    @apply block py-1 font-mission-mono text-[10px] tracking-[0.2em] text-[#2b2b2b]/50 uppercase transition-colors duration-150 hover:text-[#1e1e1e];
+  }
+
+  .mission-transmit-field {
+    @apply w-full border-0 border-b-[0.5px] border-[#2b2b2b]/25 bg-transparent py-3 font-mission-mono text-[12px] tracking-wide text-[#1e1e1e] outline-none placeholder:text-[#2b2b2b]/25;
+  }
+
+  .mission-scanner-line {
+    animation: mission-scanner 3s ease-in-out infinite;
+  }
+
+  .mission-diagram-frame {
+    @apply border-[0.5px] border-[#2b2b2b]/12 p-4 md:p-6;
+  }
+
+  .mission-diagram-scroll {
+    @apply w-full overflow-x-auto overflow-y-hidden;
+  }
+
+  .mission-diagram-image {
+    @apply h-auto max-h-[620px] object-contain;
+    min-width: 900px;
+    width: 100%;
+  }
+
+  .mission-diagram-empty {
+    @apply mt-12 flex min-h-[240px] items-center justify-center border-[0.5px] border-[#2b2b2b]/12 p-6 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/25 uppercase;
+  }
+
+  .mission-diagram-toggle {
+    @apply border-[0.5px] border-[#2b2b2b]/20 px-3 py-2 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/40 uppercase transition-colors duration-150 hover:border-[#2b2b2b]/40 hover:text-[#1e1e1e];
+  }
+
+  .mission-diagram-toggle--active {
+    @apply border-[#1e1e1e]/50 text-[#1e1e1e];
+  }
+  .mission-diagram-modal {
+    @apply fixed inset-6 z-[500] flex flex-col border-[0.5px] border-[#2b2b2b]/25 bg-[#f4f1ea] shadow-[0_0_0_9999px_rgba(30,30,30,0.28)];
+  }
+
+  .mission-diagram-modal-header {
+    @apply flex items-center justify-between border-b-[0.5px] border-[#2b2b2b]/12 px-4 py-3 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/45 uppercase;
+  }
+
+  .mission-diagram-modal-body {
+    @apply flex-1 overflow-auto p-6;
+  }
+
+  .mission-diagram-modal-image {
+    @apply h-auto max-w-none;
+    min-width: 1400px;
+    width: 1400px;
+  }
+
+  .mission-diagram-frame {
+    @apply border-[0.5px] border-[#2b2b2b]/12 p-4 md:p-6;
+  }
+
+  .mission-diagram-scroll {
+    @apply w-full overflow-x-auto overflow-y-hidden;
+  }
+
+  .mission-diagram-image {
+    @apply h-auto max-h-[620px] object-contain;
+    min-width: 900px;
+    width: 100%;
+  }
+
+  .mission-diagram-empty {
+    @apply mt-12 flex min-h-[240px] items-center justify-center border-[0.5px] border-[#2b2b2b]/12 p-6 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/25 uppercase;
+  }
+
+  .mission-diagram-toggle {
+    @apply border-[0.5px] border-[#2b2b2b]/20 px-3 py-2 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/40 uppercase transition-colors duration-150 hover:border-[#2b2b2b]/40 hover:text-[#1e1e1e];
+  }
+
+  .mission-diagram-toggle--active {
+    @apply border-[#1e1e1e]/50 text-[#1e1e1e];
+  }
+
+  .mission-diagram-modal {
+    @apply fixed inset-6 z-[500] flex flex-col border-[0.5px] border-[#2b2b2b]/25 bg-[#f4f1ea] shadow-[0_0_0_9999px_rgba(30,30,30,0.28)];
+  }
+
+  .mission-diagram-modal-header {
+    @apply flex items-center justify-between gap-4 border-b-[0.5px] border-[#2b2b2b]/12 px-4 py-3 font-mission-mono text-[9px] tracking-widest text-[#2b2b2b]/45 uppercase;
+  }
+
+  .mission-diagram-modal-body {
+    @apply flex-1 overflow-auto p-6;
+  }
+
+  .mission-diagram-modal-image {
+    @apply h-auto max-w-none;
+  }
+
+  .mission-stack-manifest {
+    @apply border-[0.5px] border-[#2b2b2b]/18 px-2 py-[2px] font-mission-mono text-[9px] tracking-[0.15em] text-[#2b2b2b]/40 uppercase transition-colors duration-150 hover:border-[#2b2b2b]/35 hover:text-[#1e1e1e]/70;
+  }
+
+  .mission-stack-manifest--public {
+    @apply group-hover:border-[#f4f1ea]/20 group-hover:text-[#f4f1ea]/55;
+  }
+}
+@keyframes mission-stamp-appear {
+  from {
+    opacity: 0;
+    transform: rotate(-17deg) scale(1.08);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(-17deg) scale(1);
+  }
+}
+
+@keyframes mission-cursor-blink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes mission-scanner {
+  0% {
+    transform: translateY(0px);
+    opacity: 0.4;
+  }
+
+  48% {
+    transform: translateY(200px);
+    opacity: 0.4;
+  }
+
+  49% {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(0px);
+    opacity: 0;
+  }
+
+  51% {
+    transform: translateY(0px);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translateY(200px);
+    opacity: 0.4;
+  }
 }

@@ -39,3 +39,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local notes / prompts
+Prompt.md
+
+# diagram source drafts
+docs/diagrams-src/
+*.excalidraw.bak
+
+# local editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# OS thumbnails
+Thumbs.db
