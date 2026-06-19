@@ -512,7 +512,7 @@ body {
 
   /* Mobile Responsive */
   .mission-mobile-nav {
-    @apply fixed inset-0 z-[100] flex flex-col overflow-hidden bg-[#f4f1ea] font-mission-mono text-[#1e1e1e];
+    @apply fixed inset-0 h-[100dvh] z-[100] flex flex-col overflow-hidden bg-[#f4f1ea] font-mission-mono text-[#1e1e1e];
     background-color: #f4f1ea;
   }
 
@@ -839,9 +839,9 @@ body {
     display: none !important;
   }
 
-    .mission-power-switch {
-      display: flex !important;
-    }
+  .mission-power-switch {
+    display: flex !important;
+  }
 
   .mission-hero {
     height: auto;

@@ -76,7 +76,7 @@ export const CASES: CaseStudy[] = [
     ],
     problem: {
       context:
-        "Ms Digi was built to transform fragmented KPI tracking from Excel, SharePoint, manual follow-ups, and static reporting into a governed KPI workflow platform. The business needed a reliable source of truth for KPI setup, monthly achievement, scoring, under-target detection, PDCA follow-up, approval control, executive summary visibility, and yearly KPI cycle preparation.",
+        "MsDigi was built to transform fragmented KPI tracking from Excel, SharePoint, manual follow-ups, and static reporting into a governed KPI workflow platform. Operating without a product manager or formal specifications, the business needed a reliable source of truth for KPI setup, monthly achievement, scoring, under-target detection, PDCA follow-up, approval control, executive summary visibility, and yearly KPI cycle preparation across three manufacturing entities (PT Sanghiang Perkasa, Kalbe Morinaga Indonesia, Kalbe Milko Indonesia) and 10 departments (FA, HCD, EXT, PROC, WH RMPM, QFS, PPIC, WHL, SHE and MS).",
 
       painPoints: [
         "KPI tracking depended on scattered Excel files, SharePoint folders, and manual reporting routines, making it difficult to maintain a reliable source of truth.",
@@ -91,7 +91,7 @@ export const CASES: CaseStudy[] = [
     },
     process: {
       summary:
-        "I approached Ms Digi as a product transformation initiative rather than a simple KPI dashboard. I studied the existing Excel and SharePoint-based workflow, translated stakeholder language into system behavior, mapped KPI ownership across PIC users and governance roles, and designed a low-friction flow that preserved the familiar Excel-like mental model. I iterated closely with Management System stakeholders as domain experts to translate manual KPI governance, PDCA expectations, approval behavior, and reporting needs into system rules that were simple for PIC users but controlled enough for governance owners. The goal was to make KPI operations feel simple for users while moving calculation, validation, approval, notification, visual exception detection, summary rendering, tenant context, and change governance into the system.",
+        "I approached MsDigi as a product transformation initiative rather than a simple KPI dashboard, acting as the sole bridge between raw business needs and technical execution. I studied the existing Excel and SharePoint-based workflows, translated informal stakeholder language into structured system behavior, and mapped KPI ownership across PIC users and governance roles. I iterated closely with Management System stakeholders as domain experts to translate manual KPI governance, PDCA expectations, approval behavior, and reporting needs into system rules that were simple for PIC users but controlled enough for governance owners. The goal was to make KPI operations feel frictionless for users while absorbing the complexity of validation, multi-entity isolation, tenant context, and change governance entirely into the system.",
       diagram: {
         src: "/diagrams/msdigit-process.svg",
         alt: "MsDigi process flow",
@@ -146,6 +146,8 @@ export const CASES: CaseStudy[] = [
         "Designed tenant and role context handling for an enterprise SSO environment without tenant-specific subdomains: users authenticated through the centralized SSO/WSO flow, then selected the valid tenant or role context available to them.",
         "Used token-based frontend context, Redis, and cookie/session handling to preserve selected tenant and role context while keeping authorization boundaries enforced by server-side RBAC and application checks.",
         "Developed PDF reporting support to render KPI dashboard and summary views into management-ready documents for review, distribution, or archival purposes.",
+        "Protected the platform's architectural value by defending its native operational efficiency against IT proposals to replace it with generic external tools like Tableau.",
+        "Designed the system to function as a self-sustaining Decision Support System, reducing operational dependency on the IT department for day-to-day permission management and report generation.",
       ],
 
       diagram: {
@@ -177,48 +179,104 @@ export const CASES: CaseStudy[] = [
         },
       ],
       qualitative:
-        "Ms Digi became more than a technical delivery project. It operated as a governed KPI workflow platform and source of truth for monthly performance monitoring, management review, and executive visibility. By designing the UI/UX around familiar Excel-like patterns, I reduced adoption friction for PIC users while moving calculation, validation, approval, notification, visual under-target detection, YTD aggregation, executive summary rendering, PDF reporting, reminder automation, yearly rollover, and change governance into the platform. The project demonstrated end-to-end ownership across product discovery, system analysis, UI/UX flow, frontend implementation, backend workflow design, data modeling, automation, stakeholder iteration, and maintainable enterprise architecture under constrained resources.",
+        "MsDigi became more than a technical delivery project; it evolved into a governed KPI workflow platform and the definitive source of truth for monthly Management Review and Board-level evaluation. By designing the UI/UX around familiar Excel-like patterns, I reduced adoption friction for PIC users while automating calculation, multi-entity validation, visual under-target detection, and executive summary rendering. The platform proved its native value over external BI tools, demonstrating end-to-end ownership across product discovery, system analysis, workflow design, fullstack implementation, and maintainable enterprise architecture within a highly constrained environment.",
     },
     next: "ecalmas",
   },
-  // {
-  //   id: "ecalmas",
-  //   caseId: "ECALMAS",
-  //   archiveDate: "2026-04",
-  //   index: "02",
-  //   codename: "OPERATION: ECALMAS",
-  //   mission: "CALIBRATION MANAGEMENT SYSTEM",
-  //   vector: "LEGACY SYSTEM → CLEAN ARCHITECTURE REVAMP",
-  //   operative: "SOLE_OPERATIVE // PROD_ENG / SYS_ANALYST",
-  //   status: "DEPLOYED",
-  //   orbit: "PLANT-LEVEL OPERATIONAL ACCURACY",
-  //   clearance: "SOLE_OPERATIVE",
-  //   classification: "PUBLIC",
-  //   stack: ["C#", ".NET 10", "CLEAN ARCH", "EF CORE", "ECHARTS"],
-  //   problem: {
-  //     context: "[INSERT HERE]",
-  //     painPoints: ["[INSERT HERE]", "[INSERT HERE]"],
-  //   },
-  //   process: {
-  //     summary: "[INSERT HERE]",
-  //   },
-  //   solution: {
-  //     summary: "[INSERT HERE]",
-  //     keyDecisions: ["[INSERT HERE]"],
-  //   },
-  //   impact: {
-  //     metrics: [
-  //       { value: "37", label: "TABLES REVERSE-ENGINEERED FROM LEGACY SYSTEM" },
-  //       { value: "[INSERT]", label: "[INSERT HERE]" },
-  //     ],
-  //     qualitative: "[INSERT HERE]",
-  //   },
-  // },
+  {
+    id: "ecalmas",
+    caseId: "EC-ALMAS",
+    archiveDate: "2026-Q2",
+    index: "02",
+    codename: "OPERATION: ECALMAS",
+    mission: "LEGACY SYSTEM RECONSTRUCTION & GOVERNANCE",
+    vector: "UNDOCUMENTED 37-TABLE DB → MODERNIZED CALIBRATION WORKFLOW",
+    operative: "SOLE_OPERATIVE // PRODUCT ENGINEER / SYSTEM ANALYST",
+    status: "UAT DELIVERED (30 DAYS)",
+    orbit: "QUALITY & CALIBRATION MANAGEMENT",
+    clearance: "SOLE_OPERATIVE",
+    classification: "PUBLIC",
+    stack: [
+      "C#",
+      ".NET 10",
+      "ASP.NET CORE MVC",
+      "ENTITY FRAMEWORK CORE",
+      "DAPPER",
+      "SQL SERVER",
+      "REDIS",
+      "HANGFIRE",
+      "NATIVE JAVASCRIPT",
+      "BOOTSTRAP",
+      "APACHE ECHARTS",
+      "ROTATIVA (PDF)",
+      "CLOSEDXML",
+      "WSO / API GATEWAY",
+    ],
+    problem: {
+      context:
+        "Ecalmas (eQuality) was a legacy calibration management system requiring a complete structural overhaul. Operating without formal specifications or BRDs, the mission required extracting business rules hidden inside 37 undocumented database tables to modernize workflows for tool registration, multi-tier approvals, and dashboard analytics across PICs, Dept Heads, and Technicians.",
+
+      painPoints: [
+        "Zero functional documentation existed, leaving critical business rules locked inside an opaque legacy database schema.",
+        "Calibration requests relied heavily on manual follow-ups, causing bottlenecks across a 4-tier approval chain (Dept Head → SPV → Staff → Technician).",
+        "Analytical needs were forcefully routed through an external BI tool (Tableau), creating unnecessary licensing and integration overhead for basic aggregations.",
+        "Missed calibration schedules were frequent due to the lack of automated tracking for Next Calibration dates and tool intervals.",
+        "Calculation file uploads lacked structural validation, making document archival and audit compliance difficult to track.",
+      ],
+    },
+    process: {
+      summary:
+        "I approached the reconstruction as an investigative reverse-engineering operation. Without formal documentation, I mapped 37 undocumented tables (including mAlatUkur, TrAlatUkur, and mCalReport) to extract the core business logic. I aligned directly with domain stakeholders to reconstruct the multi-tier approval matrix. Recognizing the simplicity of their analytical needs, I advocated for and executed the removal of Tableau, replacing it with a native embedded dashboard to drastically reduce system complexity and protect operational value.",
+    },
+    solution: {
+      summary:
+        "Deployed Ecalmas as a modernized ASP.NET Core MVC application targeting .NET 10. The rebuilt platform governs the full calibration lifecycle: multi-tier approvals, template-based file uploads, native analytics, and legacy integration. The Tableau dependency was fully eliminated. Automated Hangfire jobs now drive email reminders, and Dapper powers background syncs with legacy HPLC/LISA databases.",
+      keyDecisions: [
+        "Reverse-engineered 37 undocumented legacy tables into clean Entity Framework Core configurations to reconstruct business logic and entity relationships.",
+        "Designed a dynamic request and approval workflow supporting Tool Registration, Inactivation, Reactivation, and Calibration pipelines.",
+        "Replaced external Tableau dependencies with an embedded Apache ECharts dashboard, proving the application layer could natively handle operational analytics.",
+        "Enforced calculation upload governance by requiring technicians to generate a validated Download Number before submitting calibration results.",
+        "Implemented automated Hangfire background jobs to handle pending approval notifications and recurring calibration schedule reminders.",
+        "Integrated legacy HPLC/LISA ecosystems via background Dapper queries to autonomously sync parameter, sample, and result data into the application context.",
+        "Engineered an embedded document pipeline using Rotativa for PDF rendering and ClosedXML for Excel reports.",
+        "Designed a granular Role-Based Access Control (RBAC) system managing view, edit, delete, and print permissions at the module and menu levels.",
+        "Decoupled authentication, supporting both internal database logic and WSO/Global API gateway integration via Redis session caching and JWTs.",
+      ],
+      // diagram: {
+      //   src: "/diagrams/ecalmas-solution.svg",
+      //   alt: "Ecalmas system architecture and legacy integration flow",
+      //   caption: "FIGURE 01 — RECONSTRUCTED SYSTEM ARCHITECTURE & INTEGRATION",
+      // },
+    },
+    impact: {
+      metrics: [
+        {
+          value: "30 DAYS",
+          label: "DELIVERED TO UAT FROM ZERO DOCUMENTATION",
+        },
+        {
+          value: "37",
+          label: "UNDOCUMENTED LEGACY TABLES REVERSE-ENGINEERED",
+        },
+        {
+          value: "NATIVE",
+          label: "EMBEDDED ANALYTICS (TABLEAU ELIMINATED)",
+        },
+        {
+          value: "AUTOMATED",
+          label: "CALIBRATION REMINDERS & BACKGROUND HPLC SYNC",
+        },
+      ],
+      qualitative:
+        "OPERATION: ECALMAS successfully transitioned an opaque legacy application into a governed, automated calibration workflow platform. By reverse-engineering the database schema, I preserved essential workflow fidelity while completely modernizing the technical foundation. The strategic implementation of an embedded ECharts dashboard eliminated the operational dependency on external BI tools. Reaching UAT within one month demonstrated the ability to navigate extreme ambiguity, extract rules from legacy code, and deliver enterprise-grade operational infrastructure.",
+    },
+    next: "exit-clearance",
+  },
   {
     id: "exit-clearance",
     caseId: "EXIT-CLR",
     archiveDate: "2026-Q2",
-    index: "02",
+    index: "03",
     codename: "OPERATION: EXIT CLEARANCE",
     mission: "GOVERNANCE & TRANSITION CONTROL",
     vector: "INFORMAL EXPECTATIONS → DOCUMENTED ACCOUNTABILITY",
